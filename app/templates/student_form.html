@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h2>Student Form</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="msg {% if message.tags == 'error' %}error{% else %}success{% endif %}">
+                {{ message }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        Name: <input type="text" name="full_name" value="{{ student.full_name|default:'' }}"><br><br>
+        Mobile: <input type="number" name="mobile" value="{{ student.mobile|default:'' }}"><br><br>
+        Email: <input type="email" name="email" value="{{ student.email|default:'' }}"><br><br>
+
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

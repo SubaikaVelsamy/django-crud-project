@@ -1,0 +1,52 @@
+<h2>Students</h2>
+
+<form method="GET">
+    <input type="text" name="q" placeholder="Search name / email / mobile" value="{{ query|default:'' }}">
+    <button type="submit">Search</button>
+</form>
+
+<br>
+<a href="/logout/">Logout</a><br>
+
+<a href="/add/">Add Student</a>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Name</th>
+        <th>Mobile</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for s in page_obj %}
+    <tr>
+        <td>{{ s.full_name }}</td>
+        <td>{{ s.mobile }}</td>
+        <td>{{ s.email }}</td>
+        <td>
+            <a href="/update/{{ s.id }}/">Edit</a>
+            <a href="/delete/{{ s.id }}/">Delete</a>
+            {% if s.status == "Y" %}
+                <a href="/update_status/{{ s.id }}/" style="color:red;">Disable</a>
+            {% else %}
+                <a href="/update_status/{{ s.id }}/" style="color:green;">Activate</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+
+<!-- Pagination Controls -->
+<div>
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">Previous</a>
+    {% endif %}
+
+    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Next</a>
+    {% endif %}
+</div>
